@@ -3,6 +3,7 @@ package fr.homingpigeon.account.domain.model;
 import fr.homingpigeon.conversation.domain.model.Conversation;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Account {
@@ -70,5 +71,17 @@ public class Account {
 
     public void setFriend_requests(List<String> friend_requests) {
         this.friend_requests = friend_requests;
+    }
+
+    public void addFriend_request(String username) {
+        friend_requests.add(username);
+    }
+
+    public void deleteFriend_request(String username) {
+        friend_requests = friend_requests.stream().filter(x->!x.equals(username)).collect(Collectors.toList());
+    }
+
+    public void addFriendship(String friendo) {
+        friendships.add(friendo);
     }
 }

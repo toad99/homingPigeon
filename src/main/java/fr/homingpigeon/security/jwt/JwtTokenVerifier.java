@@ -1,10 +1,10 @@
 package fr.homingpigeon.security.jwt;
 
+import fr.homingpigeon.common.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,8 +38,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String token = authorizationHeader.replace("Bearer ", "");
         try{
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(
-                    Keys.hmacShaKeyFor(
-                            "azertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazerty".getBytes())).build()
+                    JwtConfig.secretKey()).build()
                                         .parseClaimsJws(token);
 
 

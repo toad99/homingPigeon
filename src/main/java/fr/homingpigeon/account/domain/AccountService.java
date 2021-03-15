@@ -6,8 +6,10 @@ import fr.homingpigeon.account.domain.model.Account;
 import fr.homingpigeon.account.infrastructure.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -19,14 +21,73 @@ public class AccountService {
     }
 
     public Account createAccount(Account account) {
-        List<ValidationError> validationErrors = validate(account);
+        List<ValidationError> validationErrors = validateCreate(account);
         if(validationErrors.size() != 0)
             throw new ValidationErrorException(validationErrors);
         return accountRepository.create(account);
     }
 
-    private List<ValidationError> validate(Account account) {
+    private List<ValidationError> validateCreate(Account account) {
         //TODO
         return Collections.emptyList();
+    }
+
+    public Account getAccount(String username){
+        return accountRepository.getOne(username);
+    }
+
+    public void addFriend(String username, String friendo) {
+        List<ValidationError> validationErrors = validateAddFriend(username, friendo);
+        if(validationErrors.size() != 0)
+            throw new ValidationErrorException(validationErrors);
+
+        Account friend = accountRepository.getOne(friendo);
+        friend.addFriend_request(username);
+        accountRepository.create(friend);
+    }
+
+    private List<ValidationError> validateAddFriend(String username, String friendo) {
+        List<ValidationError> validationErrors = new ArrayList<>();
+        if(username.equals(friendo))
+            validationErrors.add(new ValidationError("You can't be friend with yourself !"));
+
+        if(accountRepository.getOne(friendo)
+                            .getFriend_requests()
+                            .stream()
+                            .filter(x -> x.equals(username)).findAny().isPresent())
+            validationErrors.add(new ValidationError("Request already sent"));
+        if(accountRepository.getOne(username)
+                            .getFriendships()
+                            .stream()
+                            .filter(x -> x.equals(friendo)).findAny().isPresent())
+            validationErrors.add(new ValidationError("Already friends"));
+        return validationErrors;
+    }
+
+    public void acceptFriend(String username, String friendo) {
+        List<ValidationError> validationErrors = validateAcceptFriend(username, friendo);
+        if(validationErrors.size() != 0)
+            throw new ValidationErrorException(validationErrors);
+
+        Account user = accountRepository.getOne(username);
+        user.deleteFriend_request(friendo);
+        user.addFriendship(friendo);
+        accountRepository.create(user);
+    }
+
+    private List<ValidationError> validateAcceptFriend(String username, String friendo) {
+        List<ValidationError> validationErrors = new ArrayList<>();
+        if(accountRepository.getOne(username)
+                            .getFriend_requests()
+                            .stream()
+                            .filter(x -> x.equals(friendo)).findAny().isEmpty())
+            validationErrors.add(new ValidationError(friendo + " never wanted to be your friend and probably never " +
+                    "will"));
+        if(accountRepository.getOne(username)
+                            .getFriendships()
+                            .stream()
+                            .filter(x -> x.equals(friendo)).findAny().isPresent())
+            validationErrors.add(new ValidationError("Already friends"));
+        return validationErrors;
     }
 }

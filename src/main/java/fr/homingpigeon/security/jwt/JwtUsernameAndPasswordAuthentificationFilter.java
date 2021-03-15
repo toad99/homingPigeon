@@ -1,8 +1,8 @@
 package fr.homingpigeon.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.homingpigeon.common.JwtConfig;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,8 +55,7 @@ public class JwtUsernameAndPasswordAuthentificationFilter extends UsernamePasswo
             .claim("authorities",authResult.getAuthorities())
             .setIssuedAt(new Date())
             .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
-            .signWith(Keys.hmacShaKeyFor(
-                    "azertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazertyazerty".getBytes()))
+            .signWith(JwtConfig.secretKey())
             .compact();
         response.addHeader("Authorization","Bearer " + token);
     }
