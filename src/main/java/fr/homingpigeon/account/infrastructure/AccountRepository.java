@@ -2,7 +2,6 @@ package fr.homingpigeon.account.infrastructure;
 
 import fr.homingpigeon.account.domain.model.Account;
 import fr.homingpigeon.account.mappers.AccountMapper;
-import fr.homingpigeon.account.infrastructure.entities.AccountEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -43,5 +42,9 @@ public class AccountRepository {
     public Account getOne(String username) {
         AccountEntity entity = accountDAO.getOne(username);
         return AccountMapper.toAccount(entity);
+    }
+
+    public boolean exists(String username) {
+        return accountDAO.existsById(username);
     }
 }

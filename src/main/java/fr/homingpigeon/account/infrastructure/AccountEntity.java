@@ -1,4 +1,4 @@
-package fr.homingpigeon.account.infrastructure.entities;
+package fr.homingpigeon.account.infrastructure;
 
 import fr.homingpigeon.conversation.infrastructure.entities.ConversationEntity;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AccountEntity {
     @Id
-    @Column(name = "username")
+    @Column(name = "username",insertable = false,updatable = false)
     private String username;
 
     @Column(name = "password")

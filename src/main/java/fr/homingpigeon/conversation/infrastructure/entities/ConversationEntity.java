@@ -1,6 +1,7 @@
 package fr.homingpigeon.conversation.infrastructure.entities;
 
-import fr.homingpigeon.account.infrastructure.entities.AccountEntity;
+
+import fr.homingpigeon.account.infrastructure.AccountEntity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,10 +16,14 @@ public class ConversationEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String conversation_id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "conversation")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "conversation")
     private List<MessageEntity> messages;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "conversations")
+    @ManyToMany//(fetch = FetchType.LAZY, mappedBy = "conversations")
+    @JoinTable(
+            name = "conversation_member",
+            joinColumns = @JoinColumn(name = "conversation_id"),
+            inverseJoinColumns = @JoinColumn(name = "username"))
     private List<AccountEntity> members;
 
     public String getConversation_id() {

@@ -3,14 +3,14 @@ package fr.homingpigeon.conversation.domain.model;
 import fr.homingpigeon.account.domain.model.Account;
 
 import java.util.List;
+import java.util.Set;
 
 public class Conversation {
     private String id_conversation;
-    private List<Account> members;
+    private Set<String> members;
     private List<Message> messages;
 
-    public Conversation(String id_conversation,
-                        List<Account> members,
+    public Conversation(String id_conversation, Set<String> members,
                         List<Message> messages) {
         this.id_conversation = id_conversation;
         this.members = members;
@@ -21,23 +21,11 @@ public class Conversation {
         return id_conversation;
     }
 
-    public void setId_conversation(String id_conversation) {
-        this.id_conversation = id_conversation;
-    }
-
-    public List<Account> getMembers() {
+    public Set<String> getMembers() {
         return members;
-    }
-
-    public void setMembers(List<Account> members) {
-        this.members = members;
     }
 
     public List<Message> getMessages() {
         return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
     }
 }

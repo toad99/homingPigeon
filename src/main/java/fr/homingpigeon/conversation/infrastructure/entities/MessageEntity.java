@@ -1,6 +1,6 @@
 package fr.homingpigeon.conversation.infrastructure.entities;
 
-import fr.homingpigeon.account.infrastructure.entities.AccountEntity;
+import fr.homingpigeon.account.infrastructure.AccountEntity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -18,11 +18,11 @@ public class MessageEntity {
     String content;
 
     @ManyToOne
-    @JoinColumn(name = "username",nullable = false,insertable = false, updatable = false)
+    @JoinColumn(name = "recipient", nullable = false, referencedColumnName="username")
     AccountEntity recipient;
 
     @ManyToOne
-    @JoinColumn(name = "username",nullable = false,insertable = false, updatable = false)
+    @JoinColumn(name = "sender", nullable = false, referencedColumnName="username")
     AccountEntity sender;
 
     @Column(name = "date")

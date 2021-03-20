@@ -5,7 +5,7 @@ import fr.homingpigeon.account.mappers.AccountMapper;
 import fr.homingpigeon.account.domain.AccountService;
 import fr.homingpigeon.account.domain.model.Account;
 import fr.homingpigeon.account.exposition.dto.AccountDTO;
-import fr.homingpigeon.common.JwtConfig;
+import fr.homingpigeon.common.UsefullFunctions;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.SecretKey;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -21,10 +22,12 @@ import java.util.Collections;
 @RequestMapping("/account")
 public class AccountController {
     private final AccountService accountService;
+    private final SecretKey secretKey;
 
     @Autowired
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, SecretKey secretKey) {
         this.accountService = accountService;
+        this.secretKey = secretKey;
     }
 
     @PostMapping("/signup")
@@ -38,39 +41,23 @@ public class AccountController {
         return ResponseEntity.created(new URI("/account/" + createdAccount.getUsername())).build();
     }
 
-    public String getUsernameFromHeader(String header) {
-        String token = header.replace("Bearer ", "");
-        Jws<Claims> claimsJws = Jwts.parserBuilder()
-                                    .setSigningKey(JwtConfig.secretKey())
-                                    .build()
-                                    .parseClaimsJws(token);
-
-        return claimsJws.getBody().getSubject();
-    }
-
     @GetMapping()
     public AccountDTO getInfo(@RequestHeader("Authorization") String header) {
-        return AccountMapper.toDTO(accountService.getAccount(getUsernameFromHeader(header)));
+        return AccountMapper.toDTO(accountService.getAccount(UsefullFunctions.getUsernameFromHeader(header,secretKey)));
     }
 
-    @GetMapping("/add/{friendo}")
-    public ResponseEntity addFriend(@RequestHeader("Authorization") String header,@PathVariable("friendo") String friendo) {
-        accountService.addFriend(getUsernameFromHeader(header),friendo);
+    @GetMapping("/{friendo}/add")
+    public ResponseEntity addFriend(@RequestHeader("Authorization") String header,
+                                    @PathVariable("friendo") String friendo) {
+        accountService.addFriend(UsefullFunctions.getUsernameFromHeader(header,secretKey), friendo);
         return ResponseEntity.ok().body("Friend request sent");
     }
 
-    @GetMapping("/accept/{friendo}")
+    @GetMapping("/{friendo}/accept")
     public ResponseEntity acceptFriend(@RequestHeader("Authorization") String header,
-                                 @PathVariable("friendo") String friendo) {
-        String token = header.replace("Bearer ", "");
-        Jws<Claims> claimsJws = Jwts.parserBuilder()
-                                    .setSigningKey(JwtConfig.secretKey())
-                                    .build()
-                                    .parseClaimsJws(token);
-        Claims body = claimsJws.getBody();
-        String username = body.getSubject();
-        accountService.acceptFriend(username,friendo);
-        return ResponseEntity.ok().body("Friend request sent");
+                                       @PathVariable("friendo") String friendo) {
+        String username = UsefullFunctions.getUsernameFromHeader(header,secretKey);
+        accountService.acceptFriend(username, friendo);
+        return ResponseEntity.ok().body("Friend request accepted");
     }
-
 }

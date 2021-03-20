@@ -1,33 +1,31 @@
 package fr.homingpigeon.conversation.domain.model;
 
-import fr.homingpigeon.account.domain.model.Account;
-
 import java.time.LocalDateTime;
 
 public class Message {
-    private String id_conversation;
+    private String message_id;
     private String content;
-    private Account recipient;
-    private Account sender;
+    private String recipient;
+    private String sender;
     private LocalDateTime date;
-    private Conversation conversation;
+    private String conversation_id;
 
-    public Message(String id_conversation, String content, Account recipient,
-                   Account sender, LocalDateTime date, Conversation conversation) {
-        this.id_conversation = id_conversation;
+    public Message(String message_id, String content, String recipient, String sender, LocalDateTime date,
+                   String conversation_id) {
+        this.message_id = message_id;
         this.content = content;
         this.recipient = recipient;
         this.sender = sender;
         this.date = date;
-        this.conversation = conversation;
+        this.conversation_id = conversation_id;
     }
 
-    public String getId_conversation() {
-        return id_conversation;
+    public String getMessage_id() {
+        return message_id;
     }
 
-    public void setId_conversation(String id_conversation) {
-        this.id_conversation = id_conversation;
+    public void setMessage_id(String message_id) {
+        this.message_id = message_id;
     }
 
     public String getContent() {
@@ -38,19 +36,19 @@ public class Message {
         this.content = content;
     }
 
-    public Account getRecipient() {
+    public String getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(Account recipient) {
+    public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 
-    public Account getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Account sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -62,11 +60,11 @@ public class Message {
         this.date = date;
     }
 
-    public Conversation getConversation() {
-        return conversation;
+    public String getConversation_id() {
+        return conversation_id;
     }
 
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
+    public void setConversation_id(String conversation_id) {
+        this.conversation_id = conversation_id;
     }
 }

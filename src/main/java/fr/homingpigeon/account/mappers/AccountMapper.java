@@ -2,9 +2,8 @@ package fr.homingpigeon.account.mappers;
 
 import fr.homingpigeon.account.domain.model.Account;
 import fr.homingpigeon.account.exposition.dto.AccountDTO;
-import fr.homingpigeon.account.infrastructure.AccountDAO;
-import fr.homingpigeon.account.infrastructure.entities.AccountEntity;
 import fr.homingpigeon.conversation.mappers.ConversationMapper;
+import fr.homingpigeon.account.infrastructure.AccountEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,9 +40,11 @@ public class AccountMapper {
         return accountEntities.stream().map(AccountMapper::toAccount).collect(Collectors.toList());
     }
 
+    public static List<Account> DtosToAccounts(List<AccountDTO> accountDTOS) {
+        return accountDTOS.stream().map(AccountMapper::toAccount).collect(Collectors.toList());
+    }
+
     public static AccountEntity toEntity(Account account) {
-
-
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setUsername(account.getUsername());
         accountEntity.setPassword(account.getPassword());
@@ -68,5 +69,9 @@ public class AccountMapper {
         accountDTO.setFriendships(account.getFriendships());
         accountDTO.setFriend_requests(account.getFriend_requests());
         return accountDTO;
+    }
+
+    public static List<AccountDTO> toDTOS(List<Account> members) {
+        return members.stream().map(AccountMapper::toDTO).collect(Collectors.toList());
     }
 }

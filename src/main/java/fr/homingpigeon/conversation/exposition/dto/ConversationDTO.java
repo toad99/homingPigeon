@@ -3,10 +3,11 @@ package fr.homingpigeon.conversation.exposition.dto;
 import fr.homingpigeon.account.exposition.dto.AccountDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public class ConversationDTO {
     private String id_conversation;
-    private List<AccountDTO> members;
+    private Set<String> members;
     private List<MessageDTO> messages;
 
     public ConversationDTO() {}
@@ -19,11 +20,11 @@ public class ConversationDTO {
         this.id_conversation = id_conversation;
     }
 
-    public List<AccountDTO> getMembers() {
+    public Set<String> getMembers() {
         return members;
     }
 
-    public void setMembers(List<AccountDTO> members) {
+    public void setMembers(Set<String> members) {
         this.members = members;
     }
 

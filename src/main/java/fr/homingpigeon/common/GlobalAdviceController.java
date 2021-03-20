@@ -1,4 +1,4 @@
-package fr.homingpigeon.account.exposition;
+package fr.homingpigeon.common;
 
 import fr.homingpigeon.common.ValidationError;
 import fr.homingpigeon.common.exception.BusinessException;
@@ -14,6 +14,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalAdviceController {
 
+    //TODO : enlever ExceptionHandler de onEntityNotFoundException et gerer les 404 a la main
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Void> onEntityNotFoundException(){
         return ResponseEntity.notFound().build();

@@ -7,9 +7,7 @@ import fr.homingpigeon.account.infrastructure.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -28,11 +26,31 @@ public class AccountService {
     }
 
     private List<ValidationError> validateCreate(Account account) {
-        //TODO
-        return Collections.emptyList();
+        List<ValidationError> validationErrors = new ArrayList<>();
+
+        if(account.getUsername() == null)
+            validationErrors.add(new ValidationError("username not specified"));
+        else if(account.getUsername().length() == 0)
+            validationErrors.add(new ValidationError("username empty"));
+        else if(account.getUsername().length() > 32 || account.getUsername().length() < 4)
+            validationErrors.add(new ValidationError("username do not contain between 4 and 32 characters"));
+        else if(accountRepository.exists(account.getUsername()))
+            validationErrors.add(new ValidationError("username already taken"));
+
+        if(account.getPassword() == null)
+            validationErrors.add(new ValidationError("password not specified"));
+        else if(account.getPassword().length() < 60)
+            validationErrors.add(new ValidationError("password is not bcrypted"));
+
+        if(account.getPublic_key() == null)
+            validationErrors.add(new ValidationError("public key not specified"));
+        else if(account.getPublic_key().length() != 216)
+            validationErrors.add(new ValidationError("RSA keys must be 1024bits long in total"));
+
+        return validationErrors;
     }
 
-    public Account getAccount(String username){
+    public Account getAccount(String username) {
         return accountRepository.getOne(username);
     }
 
@@ -77,6 +95,9 @@ public class AccountService {
 
     private List<ValidationError> validateAcceptFriend(String username, String friendo) {
         List<ValidationError> validationErrors = new ArrayList<>();
+        if(username.equals(friendo))
+            validationErrors.add(new ValidationError("You can't be friend with yourself !"));
+
         if(accountRepository.getOne(username)
                             .getFriend_requests()
                             .stream()
@@ -90,4 +111,6 @@ public class AccountService {
             validationErrors.add(new ValidationError("Already friends"));
         return validationErrors;
     }
+
+    //TODO delete friends, refuse request, patch
 }

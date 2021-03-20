@@ -1,6 +1,6 @@
 package fr.homingpigeon.security.jwt;
 
-import fr.homingpigeon.common.JwtConfig;
+import fr.homingpigeon.security.jwt.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,15 @@ import com.google.common.base.Strings;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
+    private final SecretKey secretKey;
+    private final JwtConfig jwtConfig;
+
+    public JwtTokenVerifier(SecretKey secretKey,
+                            JwtConfig jwtConfig) {
+        this.secretKey = secretKey;
+        this.jwtConfig = jwtConfig;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
@@ -37,8 +47,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         }
         String token = authorizationHeader.replace("Bearer ", "");
         try{
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(
-                    JwtConfig.secretKey()).build()
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey
+                    ).build()
                                         .parseClaimsJws(token);
 
 

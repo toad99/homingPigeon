@@ -3,20 +3,22 @@ package fr.homingpigeon.conversation.exposition.dto;
 import java.time.LocalDateTime;
 
 public class MessageDTO {
-    private String id_conversation;
+    private String message_id;
     private String content;
-    private ConversationMemberDTO recipient;
-    private ConversationMemberDTO sender;
+    private String recipient;
+    private String sender;
     private LocalDateTime date;
+    private String conversation_id;
 
-    public MessageDTO(){}
-
-    public String getId_conversation() {
-        return id_conversation;
+    public MessageDTO() {
     }
 
-    public void setId_conversation(String id_conversation) {
-        this.id_conversation = id_conversation;
+    public String getMessage_id() {
+        return message_id;
+    }
+
+    public void setMessage_id(String message_id) {
+        this.message_id = message_id;
     }
 
     public String getContent() {
@@ -27,19 +29,19 @@ public class MessageDTO {
         this.content = content;
     }
 
-    public ConversationMemberDTO getRecipient() {
+    public String getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(ConversationMemberDTO recipient) {
+    public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 
-    public ConversationMemberDTO getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(ConversationMemberDTO sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -49,5 +51,13 @@ public class MessageDTO {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getConversation_id() {
+        return conversation_id;
+    }
+
+    public void setConversation_id(String conversation_id) {
+        this.conversation_id = conversation_id;
     }
 }

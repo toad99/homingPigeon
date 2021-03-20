@@ -1,5 +1,8 @@
-package fr.homingpigeon.common;
+/*package fr.homingpigeon.common;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,4 +20,15 @@ public class JwtConfig {
         return Keys.hmacShaKeyFor(
                 key.getBytes());
     }
+
+    public static String getUsernameFromHeader(String header) {
+        String token = header.replace("Bearer ", "");
+        Jws<Claims> claimsJws = Jwts.parserBuilder()
+                                    .setSigningKey(JwtConfig.secretKey())
+                                    .build()
+                                    .parseClaimsJws(token);
+
+        return claimsJws.getBody().getSubject();
+    }
 }
+*/
