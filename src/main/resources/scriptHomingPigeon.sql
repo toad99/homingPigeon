@@ -15,10 +15,8 @@ CREATE TABLE public.conversation
 
 CREATE TABLE public.conversation_member
 (
-    member_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     username character varying(32) COLLATE pg_catalog."default" NOT NULL,
     conversation_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT conversation_member_pkey PRIMARY KEY (member_id),
     CONSTRAINT fk_id_conv FOREIGN KEY (conversation_id)
         REFERENCES public.conversation (conversation_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -35,8 +33,6 @@ CREATE TABLE public.friend_request
 (
     applicant character varying(32) COLLATE pg_catalog."default" NOT NULL,
     recipient character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    friend_request_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT friend_request_pkey PRIMARY KEY (friend_request_id),
     CONSTRAINT fk_applicant FOREIGN KEY (applicant)
         REFERENCES public.account (username) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -51,15 +47,14 @@ CREATE TABLE public.friend_request
 
 CREATE TABLE public.friendship
 (
-    "user" character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    friend character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    friendship_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT friend_pkey PRIMARY KEY (friendship_id),
-    CONSTRAINT fk_account_id FOREIGN KEY ("user")
+    friend1 character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    friend2 character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT fk_friend1 FOREIGN KEY (friend1)
         REFERENCES public.account (username) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT fk_friend FOREIGN KEY (friend)
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT fk_friend2 FOREIGN KEY (friend2)
         REFERENCES public.account (username) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -85,9 +80,45 @@ CREATE TABLE public.message
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT fk_sender FOREIGN KEY (message_id)
+    CONSTRAINT fk_sender FOREIGN KEY (sender)
         REFERENCES public.account (username) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
 );
+
+CREATE OR REPLACE VIEW public.friendship_transitive_view
+ AS
+ SELECT friendship.friend1,
+    friendship.friend2
+   FROM friendship
+UNION
+ SELECT friendship.friend2 AS friend1,
+    friendship.friend1 AS friend2
+   FROM friendship;
+
+CREATE OR REPLACE FUNCTION fonction_insertFriendshipInsert() RETURNS TRIGGER AS $$
+    BEGIN
+        INSERT INTO friendship values (NEW.friend1,NEW.friend2);
+    RETURN new;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_insertFriendshipInsert
+    INSTEAD OF INSERT
+    ON friendship_transitive_view
+    FOR EACH ROW
+    EXECUTE PROCEDURE fonction_insertFriendshipInsert();
+
+CREATE OR REPLACE FUNCTION fonction_insertFriendshipDelete() RETURNS TRIGGER AS $$
+    BEGIN
+        DELETE FROM friendship where friend1=OLD.friend1 AND friend2=OLD.friend2;
+    RETURN OLD;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_insertFriendshipDelete
+    INSTEAD OF DELETE
+    ON friendship_transitive_view
+    FOR EACH ROW
+    EXECUTE PROCEDURE fonction_insertFriendshipDelete();

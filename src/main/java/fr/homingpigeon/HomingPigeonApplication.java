@@ -32,7 +32,9 @@ public class HomingPigeonApplication {
 				.build();
 	}
 
-	@Bean
+	//COMMENTER LE BEAN et les champs ssl dans properties POUR REPASSER EN HTTP
+
+	//@Bean
 	public ServletWebServerFactory servletContainer() {
 		// Enable SSL Trafic
 		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {

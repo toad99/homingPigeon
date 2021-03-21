@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "3f7759d4-b729-427d-8572-96ff96c0e306",
+		"name": "HomingPigeon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Create account",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"sammuel\",\r\n    \"password\" : \"$2y$12$1aS.hQ70aADVn1jPrwGdj.ubHUs1tCHkq6QSgxVZvMMsdBIR4rG8q\",\r\n    \"public_key\" : \"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmmCLi5PM1Lu5Yhpbq5VkrqPImHti+kkWeVLcLeNQ8yiyQIMid3GlwaCvv3KMK5F0Qpl/D6ATbvxJrG3nA0+H53ynAv2ZTqvCz/oLRin2SFZWZIrdIWITEfIYcvyYc7j6rrrZvBoihB1+tFT75zpEoibCSLhIfzoIH6mDBHWbYMQIDAQAB\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/account/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Connexion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/*{\r\n    \"username\" : \"bryan\",\r\n    \"password\" : \"password\"\r\n}*/\r\n\r\n\r\n{\r\n    \"username\" : \"sammuel\",\r\n    \"password\" : \"$2y$12$1aS.hQ70aADVn1jPrwGdj.ubHUs1tCHkq6QSgxVZvMMsdBIR4rG8q\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicnlhbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpYXQiOjE2MTYwNzc0OTksImV4cCI6MTYxNjEwODQwMH0.CxXltpOF56OhdhJrrDbBFsFXszg5V2gUHsjjTbFmxSgM0ontLeNs3kTPvh65ghGdAe68j4oZ4rsAV0egolMXrg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add friend",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNTgzMTcxNiwiZXhwIjoxNjE1ODQ5MjAwfQ.mmHVbMBGU3wykaO7yU1-N_aeDlAt0iPF1-TGuEMpgDwMRP1hH-jJwxD3UfyvjNNXP45gceT_FjtEsqB4OWLSIg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/fred/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"fred",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept friend",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicnlhbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpYXQiOjE2MTYwNzc0OTksImV4cCI6MTYxNjEwODQwMH0.CxXltpOF56OhdhJrrDbBFsFXszg5V2gUHsjjTbFmxSgM0ontLeNs3kTPvh65ghGdAe68j4oZ4rsAV0egolMXrg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/sammuel/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"sammuel",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Conversation",
+			"item": [
+				{
+					"name": "Create conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNjA3NzUyMywiZXhwIjoxNjE2MTA4NDAwfQ.Ud7vqISXtxvMVgdosnXD2nv1AIa8BcIesM6xUSH7tuL1dCgeB-Ys1Fye-7EcpK7lMjsUEHNal-DD9G8RVqwqmg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"members\" : [\r\n        \"bryan\",\"sammuel\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/conversation/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"conversation",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNjExNzY5MSwiZXhwIjoxNjE2MTk0ODAwfQ.oGT0aocmb3OmHoArpMyvfWrFMNl8k77-Ha07rd3d93OQhCidsShLp2afEP8VqsqrjzftfZ6JtU7S8AC7mhcdfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/conversation/b73010f5-2639-4514-9260-1b978d215f6e",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"conversation",
+								"b73010f5-2639-4514-9260-1b978d215f6e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "Send message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicnlhbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpYXQiOjE2MTYyNDg3MjIsImV4cCI6MTYxNjI4MTIwMH0.ORQKNd0bBJR3JedC_Sjk3pUAUIQWr03dPLuXfoak-OVbaSthnzWPGAQz1Zy2TTsOKXyxNHwKvDcTBMpNbuMdGw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\" : \"bonjour\",\r\n    \"recipient\" : \"anon\",\r\n    \"conversation_id\" : \"b73010f5-2639-4514-9260-1b978d215f6e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/message/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"message",
+								"send"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNjA3NzQyNCwiZXhwIjoxNjE2MTA4NDAwfQ.NIywi10h7DnHAhmTCGmi4Lwa4Sye4OYRWQKAxdyXsX_R8HHPqE0qa4X6uqaGP1EwM7q1Y-ut3hrmZEkM8VOnrw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:8443"
+		},
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"disabled": true
+		}
+	]
+}
