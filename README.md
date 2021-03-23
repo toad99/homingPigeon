@@ -1,2 +1,2 @@
 # homingPigeon
-Whatsapp like application with RSA encrypted communication
+Back end of a Whats'App like application with RSA encrypted communication
