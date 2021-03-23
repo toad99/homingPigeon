@@ -62,7 +62,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             Authentication authentication = new UsernamePasswordAuthenticationToken(username,null,simpleGrantedAuthoritySet);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch(JwtException e){
-            throw new IllegalStateException("Token has been forged\n" + token);
+            throw new IllegalStateException("Token is not valid\n" + token);
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }

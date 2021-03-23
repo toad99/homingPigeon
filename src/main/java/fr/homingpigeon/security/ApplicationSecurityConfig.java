@@ -6,12 +6,15 @@ import fr.homingpigeon.security.jwt.JwtUsernameAndPasswordAuthentificationFilter
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,7 +33,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtConfig jwtConfig;
 
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     public ApplicationSecurityConfig(SecretKey secretKey, JwtConfig jwtConfig) {
@@ -41,7 +45,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-            .usersByUsernameQuery("select username,password,enable from account where username = ?")
+            .usersByUsernameQuery("select username,password,enable from account where username = ?").passwordEncoder(getPasswordEncoder())
         .authoritiesByUsernameQuery("select ? as username, 'USER' as authority");
     }
 
@@ -59,11 +63,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticated();
     }
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() { return NoOpPasswordEncoder.getInstance();
-    }
-
     public static void main(String[] args) {
         System.out.println(TimeUnit.DAYS.toSeconds(1));
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() { return new BCryptPasswordEncoder();
     }
 }

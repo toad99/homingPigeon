@@ -54,10 +54,26 @@ public class AccountController {
     }
 
     @GetMapping("/{friendo}/accept")
-    public ResponseEntity acceptFriend(@RequestHeader("Authorization") String header,
-                                       @PathVariable("friendo") String friendo) {
+    public ResponseEntity acceptRequest(@RequestHeader("Authorization") String header,
+                                        @PathVariable("friendo") String friendo) {
         String username = UsefullFunctions.getUsernameFromHeader(header,secretKey);
         accountService.acceptFriend(username, friendo);
         return ResponseEntity.ok().body("Friend request accepted");
+    }
+
+    @GetMapping("/{friendo}/refuse")
+    public ResponseEntity refuseRequest(@RequestHeader("Authorization") String header,
+                                       @PathVariable("friendo") String friendo) {
+        String username = UsefullFunctions.getUsernameFromHeader(header,secretKey);
+        accountService.refuseRequest(username, friendo);
+        return ResponseEntity.ok().body("Friend request refused");
+    }
+
+    @GetMapping("/{friendo}/delete")
+    public ResponseEntity deleteFriend(@RequestHeader("Authorization") String header,
+                                       @PathVariable("friendo") String friendo) {
+        String username = UsefullFunctions.getUsernameFromHeader(header,secretKey);
+        accountService.deleteFriend(username, friendo);
+        return ResponseEntity.ok().body("Friend removed");
     }
 }
