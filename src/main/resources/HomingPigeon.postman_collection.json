@@ -18,7 +18,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\" : \"sammuel\",\r\n    \"password\" : \"$2y$12$1aS.hQ70aADVn1jPrwGdj.ubHUs1tCHkq6QSgxVZvMMsdBIR4rG8q\",\r\n    \"public_key\" : \"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmmCLi5PM1Lu5Yhpbq5VkrqPImHti+kkWeVLcLeNQ8yiyQIMid3GlwaCvv3KMK5F0Qpl/D6ATbvxJrG3nA0+H53ynAv2ZTqvCz/oLRin2SFZWZIrdIWITEfIYcvyYc7j6rrrZvBoihB1+tFT75zpEoibCSLhIfzoIH6mDBHWbYMQIDAQAB\"\r\n}",
+							"raw": "{\r\n    \"username\" : \"anon\",\r\n    \"password\" : \"password\",\r\n    \"public_key\" : \"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmmCLi5PM1Lu5Yhpbq5VkrqPImHti+kkWeVLcLeNQ8yiyQIMid3GlwaCvv3KMK5F0Qpl/D6ATbvxJrG3nA0+H53ynAv2ZTqvCz/oLRin2SFZWZIrdIWITEfIYcvyYc7j6rrrZvBoihB1+tFT75zpEoibCSLhIfzoIH6mDBHWbYMQIDAQAB\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "/*{\r\n    \"username\" : \"bryan\",\r\n    \"password\" : \"password\"\r\n}*/\r\n\r\n\r\n{\r\n    \"username\" : \"sammuel\",\r\n    \"password\" : \"$2y$12$1aS.hQ70aADVn1jPrwGdj.ubHUs1tCHkq6QSgxVZvMMsdBIR4rG8q\"\r\n}\r\n",
+							"raw": "{\r\n    \"username\" : \"anon\",\r\n    \"password\" : \"password\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -72,7 +72,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicnlhbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpYXQiOjE2MTYwNzc0OTksImV4cCI6MTYxNjEwODQwMH0.CxXltpOF56OhdhJrrDbBFsFXszg5V2gUHsjjTbFmxSgM0ontLeNs3kTPvh65ghGdAe68j4oZ4rsAV0egolMXrg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNjQ2MjgyMywiZXhwIjoxNjE2NTQwNDAwfQ.zWKyVHB_x9X8IzgGdw-7bLiYSIHZXP7NvAbHI46ABbhSjIp3pg5eXsNI1ecDZHEIOrHZ3_0_v9bfr5E3MZGwhw",
 									"type": "string"
 								}
 							]
@@ -145,6 +145,100 @@
 								"account",
 								"sammuel",
 								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refuse friend request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/anon/refuse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"anon",
+								"refuse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete friend",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/bryan/delete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"bryan",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get friends",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicnlhbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpYXQiOjE2MTY4ODQzMzcsImV4cCI6MTYxNjg4NjAwMH0.7SOkVQTdPJTucvwnQY_mVmKFKXWxIJuq3qtRpFrEAhvUHXe5goY2eQB6HGzkTRc9aYm4uwajJn3IpP2f5YYahg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/friends",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"friends"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get conversations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJicnlhbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJpYXQiOjE2MTY4ODQzMzcsImV4cCI6MTYxNjg4NjAwMH0.7SOkVQTdPJTucvwnQY_mVmKFKXWxIJuq3qtRpFrEAhvUHXe5goY2eQB6HGzkTRc9aYm4uwajJn3IpP2f5YYahg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/friends",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"friends"
 							]
 						}
 					},
@@ -223,7 +317,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNjExNzY5MSwiZXhwIjoxNjE2MTk0ODAwfQ.oGT0aocmb3OmHoArpMyvfWrFMNl8k77-Ha07rd3d93OQhCidsShLp2afEP8VqsqrjzftfZ6JtU7S8AC7mhcdfQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9uIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlVTRVIifV0sImlhdCI6MTYxNzk5NjcxOCwiZXhwIjoxNjE4MDA1NjAwfQ.42ZyFYEdTWMkQNTqgjfqmkCOYHZa7OBcl52BgYu45U6eohxS3BFIi9RqwtpVdZDOCKgXZC6TJtqcFA-FWYkORQ",
 									"type": "string"
 								}
 							]
@@ -231,15 +325,33 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/conversation/b73010f5-2639-4514-9260-1b978d215f6e",
+							"raw": "{{base_url}}/conversation/e535944e-4019-4bce-848a-217467ec9cda",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"conversation",
-								"b73010f5-2639-4514-9260-1b978d215f6e"
+								"e535944e-4019-4bce-848a-217467ec9cda"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get members of conversation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
 					},
 					"response": []
 				}
@@ -320,13 +432,15 @@
 	],
 	"variable": [
 		{
+			"id": "37dc043d-c142-491c-a75c-f10e4f3487ab",
 			"key": "base_url",
-			"value": "https://localhost:8443"
+			"value": "https://localhost:8443",
+			"disabled": true
 		},
 		{
+			"id": "0b19cce7-9401-496b-abe2-173a64faec41",
 			"key": "base_url",
-			"value": "http://localhost:8080",
-			"disabled": true
+			"value": "http://localhost:8080"
 		}
 	]
 }

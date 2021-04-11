@@ -32,7 +32,8 @@ public class HomingPigeonApplication {
 				.build();
 	}
 
-	//COMMENTER LE BEAN et les champs ssl dans properties POUR REPASSER EN HTTP
+	//implentation of https from : https://github.com/dangeabunea/RomanianCoderExamples/tree/master/SpringBootSecurity
+	//DECOMMENTER LE BEAN et les champs ssl dans properties POUR REPASSER EN HTTPS
 
 	//@Bean
 	public ServletWebServerFactory servletContainer() {

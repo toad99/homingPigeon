@@ -10,13 +10,12 @@ public class Account {
     private String username;
     private String password;
     private String public_key;
-    private List<Conversation> conversations;
+    private List<String> conversations;
     private List<String> friendships;
     private List<String> friend_requests;
 
-    public Account(String username, String password, String public_key,
-                   List<Conversation> conversations, List<String> friendships,
-                   List<String> friend_requests) {
+    public Account(String username, String password, String public_key, List<String> conversations,
+                   List<String> friendships, List<String> friend_requests) {
         this.username = username;
         this.password = password;
         this.public_key = public_key;
@@ -49,11 +48,11 @@ public class Account {
         this.public_key = public_key;
     }
 
-    public List<Conversation> getConversations() {
+    public List<String> getConversations() {
         return conversations;
     }
 
-    public void setConversations(List<Conversation> conversations) {
+    public void setConversations(List<String> conversations) {
         this.conversations = conversations;
     }
 
@@ -73,15 +72,19 @@ public class Account {
         this.friend_requests = friend_requests;
     }
 
-    public void addFriend_request(String username) {
-        friend_requests.add(username);
-    }
-
-    public void deleteFriend_request(String username) {
-        friend_requests = friend_requests.stream().filter(x->!x.equals(username)).collect(Collectors.toList());
+    public void deleteFriend_request(String friendo) {
+        friend_requests.remove(friendo);
     }
 
     public void addFriendship(String friendo) {
         friendships.add(friendo);
+    }
+
+    public void addFriend_request(String username) {
+        friend_requests.add(username);
+    }
+
+    public void deleteFriendship(String friendo) {
+        friendships.remove(friendo);
     }
 }

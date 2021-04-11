@@ -30,8 +30,17 @@ public class AccountMapper {
         else
             friend_requestList = accountEntity.getFriend_requests().stream().map(x->x.getUsername()).collect(Collectors.toList());
 
-        return new Account(accountEntity.getUsername(),accountEntity.getPassword(),accountEntity.getPublic_key(),
-                ConversationMapper.toConversations(accountEntity.getConversations()),
+        List<String> conversations;
+        if(accountEntity.getConversations() == null)
+            conversations = Collections.emptyList();
+        else
+            conversations =
+                    accountEntity.getConversations().stream().map(x->x.getConversation_id()).collect(Collectors.toList());
+
+        return new Account(accountEntity.getUsername(),
+                accountEntity.getPassword(),
+                accountEntity.getPublic_key(),
+                conversations,
                 friendList,
                 friend_requestList);
     }
@@ -49,10 +58,10 @@ public class AccountMapper {
         accountEntity.setUsername(account.getUsername());
         accountEntity.setPassword(account.getPassword());
         accountEntity.setPublic_key(account.getPublic_key());
-        accountEntity.setConversations(ConversationMapper.toEntities(account.getConversations()));
         //ATTRIBUER DANS LE REPO LES ACCOUNTS avec un DAO.get()
         //accountEntity.setFriendships();
         //accountEntity.setFriend_requests();
+        //accountEntity.setConversations();
         return accountEntity;
     }
 

@@ -97,7 +97,7 @@ UNION
     friendship.friend1 AS friend2
    FROM friendship;
 
-CREATE OR REPLACE FUNCTION fonction_insertFriendshipInsert() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION fonction_friendshipInsert() RETURNS TRIGGER AS $$
     BEGIN
         INSERT INTO friendship values (NEW.friend1,NEW.friend2);
     RETURN new;
@@ -108,11 +108,11 @@ CREATE TRIGGER trig_insertFriendshipInsert
     INSTEAD OF INSERT
     ON friendship_transitive_view
     FOR EACH ROW
-    EXECUTE PROCEDURE fonction_insertFriendshipInsert();
+    EXECUTE PROCEDURE fonction_friendshipInsert();
 
-CREATE OR REPLACE FUNCTION fonction_insertFriendshipDelete() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION fonction_friendshipDelete() RETURNS TRIGGER AS $$
     BEGIN
-        DELETE FROM friendship where friend1=OLD.friend1 AND friend2=OLD.friend2;
+        DELETE FROM friendship WHERE friend1=OLD.friend1 AND friend2=OLD.friend2 OR friend2=OLD.friend1 AND friend1=OLD.friend2;
     RETURN OLD;
     END;
 $$ LANGUAGE plpgsql;
@@ -121,4 +121,4 @@ CREATE TRIGGER trig_insertFriendshipDelete
     INSTEAD OF DELETE
     ON friendship_transitive_view
     FOR EACH ROW
-    EXECUTE PROCEDURE fonction_insertFriendshipDelete();
+    EXECUTE PROCEDURE fonction_friendshipDelete();

@@ -47,11 +47,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         }
         String token = authorizationHeader.replace("Bearer ", "");
         try{
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey
-                    ).build()
-                                        .parseClaimsJws(token);
-
-
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             Claims body = claimsJws.getBody();
             String username = body.getSubject();
             var authorities = (List<Map<String,String>>) body.get("authorities");

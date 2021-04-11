@@ -1,5 +1,6 @@
 package fr.homingpigeon.conversation.exposition;
 
+import fr.homingpigeon.conversation.exposition.dto.MessageDTO;
 import fr.homingpigeon.security.jwt.JwtConfig;
 import fr.homingpigeon.common.UsefullFunctions;
 import fr.homingpigeon.conversation.domain.ConversationService;
@@ -17,6 +18,9 @@ import javax.crypto.SecretKey;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/conversation")
@@ -46,6 +50,23 @@ public class ConversationController {
             @PathVariable("conversation_id") String conversation_id) {
         String username = UsefullFunctions.getUsernameFromHeader(header,jwtSecret);
         return ConversationMapper.toDTO(conversationService.getConversation(username,conversation_id));
+    }
+
+    @GetMapping("/{conversation_id}/members")
+    public Set<String> getConversationMembers(@RequestHeader("Authorization") String header,
+                                              @PathVariable("conversation_id") String conversation_id) {
+        String username = UsefullFunctions.getUsernameFromHeader(header,jwtSecret);
+        return ConversationMapper.toDTO(conversationService.getConversation(username,conversation_id)).getMembers();
+    }
+
+    @GetMapping("/{conversation_id}/messages")
+    public List<MessageDTO> getConversationMessages(@RequestHeader("Authorization") String header,
+                                                   @PathVariable("conversation_id") String conversation_id) {
+        String username = UsefullFunctions.getUsernameFromHeader(header,jwtSecret);
+        return ConversationMapper.toDTO(conversationService.getConversation(username,conversation_id))
+                                 .getMessages().stream()
+                                               .filter(x->x.getRecipient().equals(username) || x.getSender().equals(username))
+                                               .collect(Collectors.toList());
     }
 
 }

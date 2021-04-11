@@ -2,6 +2,8 @@ package fr.homingpigeon.account.infrastructure;
 
 import fr.homingpigeon.account.domain.model.Account;
 import fr.homingpigeon.account.mappers.AccountMapper;
+import fr.homingpigeon.conversation.infrastructure.ConversationDAO;
+import fr.homingpigeon.conversation.infrastructure.entities.ConversationEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -13,9 +15,12 @@ import java.util.stream.Collectors;
 public class AccountRepository {
 
     private final AccountDAO accountDAO;
+    private final ConversationDAO conversationDAO;
 
-    public AccountRepository(AccountDAO accountDAO) {
+    public AccountRepository(AccountDAO accountDAO,
+                             ConversationDAO conversationDAO) {
         this.accountDAO = accountDAO;
+        this.conversationDAO = conversationDAO;
     }
 
     public Account create(Account account) {
@@ -33,9 +38,19 @@ public class AccountRepository {
         else
             friend_requestList = account.getFriend_requests().stream().map(x->accountDAO.getOne(x)).collect(Collectors.toList());
 
+        List<ConversationEntity> conversations;
+        if(account.getConversations() == null)
+            conversations = Collections.emptyList();
+        else
+            conversations =
+                    account.getConversations().stream().map(x->conversationDAO.getOne(x)).collect(Collectors.toList());
+
         entityToSave.setFriendships(friendList);
         entityToSave.setFriend_requests(friend_requestList);
+        entityToSave.setConversations(conversations);
+
         AccountEntity createdAccount = accountDAO.save(entityToSave);
+
         return AccountMapper.toAccount(createdAccount);
     }
 

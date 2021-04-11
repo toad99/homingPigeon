@@ -6,17 +6,14 @@ import fr.homingpigeon.account.domain.AccountService;
 import fr.homingpigeon.account.domain.model.Account;
 import fr.homingpigeon.account.exposition.dto.AccountDTO;
 import fr.homingpigeon.common.UsefullFunctions;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.crypto.SecretKey;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/account")
@@ -45,6 +42,17 @@ public class AccountController {
     public AccountDTO getInfo(@RequestHeader("Authorization") String header) {
         return AccountMapper.toDTO(accountService.getAccount(UsefullFunctions.getUsernameFromHeader(header,secretKey)));
     }
+
+    @GetMapping("/conversations")
+    public List<String> getConversation(@RequestHeader("Authorization") String header) {
+        return accountService.getAccount(UsefullFunctions.getUsernameFromHeader(header,secretKey)).getConversations();
+    }
+
+    @GetMapping("/friends")
+    public List<String> getFriends(@RequestHeader("Authorization") String header) {
+        return accountService.getAccount(UsefullFunctions.getUsernameFromHeader(header,secretKey)).getFriendships();
+    }
+
 
     @GetMapping("/{friendo}/add")
     public ResponseEntity addFriend(@RequestHeader("Authorization") String header,

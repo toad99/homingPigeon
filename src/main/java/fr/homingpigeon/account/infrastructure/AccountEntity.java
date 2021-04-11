@@ -27,14 +27,14 @@ public class AccountEntity {
             inverseJoinColumns = @JoinColumn(name = "conversation_id"))
     private List<ConversationEntity> conversations;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "friendship_transitive_view",
             joinColumns = @JoinColumn(name = "friend1"),
             inverseJoinColumns = @JoinColumn(name = "friend2"))
     private List<AccountEntity> friendships;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "friend_request",
             joinColumns = @JoinColumn(name = "recipient"),

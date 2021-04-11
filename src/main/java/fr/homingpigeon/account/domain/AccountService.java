@@ -74,9 +74,16 @@ public class AccountService {
         if(validationErrors.size() != 0)
             throw new ValidationErrorException(validationErrors);
 
-        Account friend = accountRepository.getOne(friendo);
-        friend.addFriend_request(username);
-        accountRepository.create(friend);
+        Account user = accountRepository.getOne(username);
+        if(user.getFriend_requests().contains(friendo)){
+            user.addFriendship(friendo);
+            accountRepository.create(user);
+        }
+        else {
+            Account friend = accountRepository.getOne(friendo);
+            friend.addFriend_request(username);
+            accountRepository.create(friend);
+        }
     }
 
     private List<ValidationError> validateAddFriend(String username, String friendo) {
@@ -132,7 +139,7 @@ public class AccountService {
         if(validationErrors.size() != 0)
             throw new ValidationErrorException(validationErrors);
         Account account = accountRepository.getOne(username);
-        account.getFriend_requests().remove(friendo);
+        account.deleteFriend_request(friendo);
         accountRepository.create(account);
     }
 
@@ -160,19 +167,20 @@ public class AccountService {
         if(validationErrors.size() != 0)
             throw new ValidationErrorException(validationErrors);
         Account account = accountRepository.getOne(username);
-        account.getFriendships().remove(friendo);
-        accountRepository.create(account);
+        account.deleteFriendship(friendo);
+        Account newAccount = accountRepository.create(account);
+        System.out.println(newAccount.getFriendships());
     }
 
     private List<ValidationError> validateDeleteFriend(String username, String friendo) {
         List<ValidationError> validationErrors = new ArrayList<>();
         if(username.equals(friendo))
             validationErrors.add(new ValidationError("You can't be friend with yourself in the first place!"));
-        if(accountRepository.getOne(username)
+        else if(accountRepository.getOne(username)
                             .getFriendships()
                             .stream()
                             .filter(x -> x.equals(friendo)).findAny().isEmpty())
-            validationErrors.add(new ValidationError(friendo + "never was your friend"));
+            validationErrors.add(new ValidationError(friendo + " is not your friend"));
         return validationErrors;
     }
 }

@@ -2,12 +2,14 @@ package fr.homingpigeon.conversation.domain;
 
 import fr.homingpigeon.account.infrastructure.AccountRepository;
 import fr.homingpigeon.common.ValidationError;
+import fr.homingpigeon.common.exception.ForbiddenException;
 import fr.homingpigeon.common.exception.ValidationErrorException;
 import fr.homingpigeon.conversation.domain.model.Conversation;
 import fr.homingpigeon.conversation.infrastructure.ConversationRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +60,7 @@ public class ConversationService {
             validationErrors.add(new ValidationError("At least one of the members is not your friend" +
                     conversation.getMembers()
                                 .stream()
-                                .filter(x -> !accountRepository.getOne(x).getFriendships().contains(username))
+                                .filter(x -> !x.equals(username) && !accountRepository.getOne(x).getFriendships().contains(username))
                                 .collect(Collectors.toList())));
 
         if(conversationRepository.exists(conversation.getMembers()))
@@ -69,7 +71,7 @@ public class ConversationService {
     public Conversation getConversation(String username, String conversation_id) {
         Conversation conversation = conversationRepository.getOne(conversation_id);
         if(!conversation.getMembers().contains(username))
-            throw new EntityNotFoundException("You are not in the conversation");
+            throw new ForbiddenException("Vous n'êtes pas dans la conversation");
         return conversation;
     }
 }

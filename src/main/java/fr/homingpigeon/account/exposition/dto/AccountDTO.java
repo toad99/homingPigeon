@@ -10,7 +10,7 @@ public class AccountDTO {
     private String username;
     private String password;
     private String public_key;
-    private List<Conversation> conversations;
+    private List<String> conversations;
     private List<String> friendships;
     private List<String> friend_requests;
 
@@ -40,11 +40,11 @@ public class AccountDTO {
         this.public_key = public_key;
     }
 
-    public List<Conversation> getConversations() {
+    public List<String> getConversations() {
         return conversations;
     }
 
-    public void setConversations(List<Conversation> conversations) {
+    public void setConversations(List<String> conversations) {
         this.conversations = conversations;
     }
 

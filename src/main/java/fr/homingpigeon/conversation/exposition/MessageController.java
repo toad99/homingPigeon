@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.crypto.SecretKey;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -29,6 +30,8 @@ public class MessageController {
         String sender = UsefullFunctions.getUsernameFromHeader(header,jwtSecret);
         messageDTO.setMessage_id(null);
         messageDTO.setSender(sender);
+        messageDTO.setRecipient(null);
+        messageDTO.setDate(LocalDateTime.now());
         messageService.sendMessage(MessageMapper.toMessage(messageDTO));
         return ResponseEntity.ok("Message sent");
     }
